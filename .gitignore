@@ -1,0 +1,10 @@
+﻿################################################################################
+# 此 .gitignore 文件已由 Microsoft(R) Visual Studio 自动创建。
+################################################################################
+
+/Classics4Cpp/.vs/Classics4Cpp/v16/ipch/AutoPCH
+/Classics4Cpp/Debug
+/Classics4Cpp/.vs/Classics4Cpp/v16
+/MultiThreadDemo/Debug
+/MultiThreadDemo/MultiThreadDemo.vcxproj.user
+/MultiThreadDemo/MultiThreadDemo.vcxproj.filters
