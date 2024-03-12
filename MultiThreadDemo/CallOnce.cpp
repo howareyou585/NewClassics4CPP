@@ -2,6 +2,7 @@
 #include <thread>
 #include <mutex>
 #include "CallOnce.h"
+#include "Singleton.h"
 using namespace std;
 std::once_flag flg;
 void Initialize()
@@ -24,4 +25,23 @@ void CallOneExcute()
 	t2.join();
 	t3.join();
 	t4.join();
+}
+
+void CallOneSingletonExcute()
+{
+	thread t1(SingletonObjTask);
+	
+	thread t2(SingletonObjTask);
+	thread t3(SingletonObjTask);
+	thread t4(SingletonObjTask);
+	t1.join();
+	t2.join();
+	t3.join();
+	t4.join();
+}
+void SingletonObjTask()
+{   
+	
+	//this_thread::sleep_for(std::chrono::microseconds(100));
+	Singleton* ptrSingletonObject = Singleton::getInstance();
 }

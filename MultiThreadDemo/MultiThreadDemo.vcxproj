@@ -141,9 +141,11 @@
   <ItemGroup>
     <ClCompile Include="CallOnce.cpp" />
     <ClCompile Include="MultiThreadDemo.cpp" />
+    <ClCompile Include="Singleton.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CallOnce.h" />
+    <ClInclude Include="Singleton.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
