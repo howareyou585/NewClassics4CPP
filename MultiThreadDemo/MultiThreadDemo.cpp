@@ -2,12 +2,20 @@
 //
 
 #include <iostream>
-#include "CallOnce.h"
+#include "CallOnce.h" 
+#include "MessageQueueConditionVariable.h"
 int main()
 {
-    std::cout << "Hello World!\n";
+    
     //CallOneExcute();
-    CallOneSingletonExcute();
+    //CallOneSingletonExcute();
+	//条件变量
+	MessageQueueConditionVariable msgQueCVObj;
+	thread t1(&MessageQueueConditionVariable::inMessageRecvQueue, &msgQueCVObj);
+	thread t2(&MessageQueueConditionVariable::outMessageRecvQueue, &msgQueCVObj);
+	t1.join();
+	t2.join();
+	std::cout << "Hello World!\n";
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单
