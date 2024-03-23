@@ -4,18 +4,40 @@
 #include <iostream>
 #include "CallOnce.h" 
 #include "MessageQueueConditionVariable.h"
+#include "AsyncFuture.h"
+#include <thread>
+#include <future>
+using namespace std;
 int main()
 {
     
     //CallOneExcute();
     //CallOneSingletonExcute();
 	//条件变量
-	MessageQueueConditionVariable msgQueCVObj;
+	/*MessageQueueConditionVariable msgQueCVObj;
 	thread t1(&MessageQueueConditionVariable::inMessageRecvQueue, &msgQueCVObj);
 	thread t2(&MessageQueueConditionVariable::outMessageRecvQueue, &msgQueCVObj);
 	t1.join();
-	t2.join();
+	t2.join();*/
+
+	//async  feture demo
+	cout << "main() start thread id =" << this_thread::get_id() << endl;
+	//auto fetureResult = async(AsyncPrint); //AsynPrint有返回值
+	//
+	//auto res = fetureResult.get();
+	//cout << "res = " << res << endl;
+
+	//auto fetureResultWithoutRetVal = async(AsyncPrintWithoutRetValue);
+	//AsyncPrintWithoutRetValue 函数没有返回值，不能调用wait / get 方法
+	//fetureResultWithoutRetVal.wait(); 
+
+	AsyncFuture af;
+	auto fetureObject = std::async(&AsyncFuture::ThreadFunc, ref(af), 5);
+	auto fres = fetureObject.get();
+	cout << "af.m_val = " << af.GetVal() << endl;
+	
 	std::cout << "Hello World!\n";
+	cout << "main() end thread id =" << this_thread::get_id() << endl;
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单

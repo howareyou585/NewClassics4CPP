@@ -139,12 +139,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AsyncFuture.cpp" />
     <ClCompile Include="CallOnce.cpp" />
     <ClCompile Include="MessageQueueConditionVariable.cpp" />
     <ClCompile Include="MultiThreadDemo.cpp" />
     <ClCompile Include="Singleton.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AsyncFuture.h" />
     <ClInclude Include="CallOnce.h" />
     <ClInclude Include="MessageQueueConditionVariable.h" />
     <ClInclude Include="Singleton.h" />
