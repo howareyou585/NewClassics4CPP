@@ -66,13 +66,24 @@ void testPackagedTask()
 	
 	//2.packaged_task用做调用对象
 
-	packaged_task<int(int)> ptObject(PrintPackageTask);
+	/*packaged_task<int(int)> ptObject(PrintPackageTask);
 	int a = 10;
 	thread t2(ref(ptObject), a);
 	t2.join();
 	auto res2 = ptObject.get_future();
-	auto ret2 = res2.get();
+	auto ret2 = res2.get();*/
 
+	vector<packaged_task<int(int)>> vecTask;
+	packaged_task<int(int)> task2(PrintPackageTask);
+	vecTask.push_back(std::move(task2));
+	for (auto it = vecTask.begin(); it != vecTask.end(); it++)
+	{
+		auto tempTask = std::move(*it);
+		tempTask(5);
+		//要获取结果，则还是要借助get_future()
+		auto r = tempTask.get_future().get();
+		cout <<  r << endl;
+	}
 }
 
 int main()
