@@ -5,9 +5,76 @@
 #include "CallOnce.h" 
 #include "MessageQueueConditionVariable.h"
 #include "AsyncFuture.h"
+#include "PackageTask.h"
 #include <thread>
 #include <future>
 using namespace std;
+//测试 asyn future的示例
+void testAsynFuture()
+{
+	//1.异步函数是一般函数
+	//auto fetureResult = async(AsyncPrint); //AsynPrint有返回值
+	//
+	//auto res = fetureResult.get();
+	//cout << "res = " << res << endl;
+
+	//auto fetureResultWithoutRetVal = async(AsyncPrintWithoutRetValue);
+	//AsyncPrintWithoutRetValue 函数没有返回值，不能调用wait / get 方法
+	//fetureResultWithoutRetVal.wait(); 
+	//2.异步函数是类的成员函数
+	/*AsyncFuture af;
+	auto fetureObject = std::async(&AsyncFuture::ThreadFunc, ref(af), 5);
+	auto fres = fetureObject.get();
+	cout << "af.m_val = " << af.GetVal() << endl;*/
+
+	//3.异步函数是lamda 表达是
+	/*auto lamdaFeture = std::async([]() {
+		cout << "lamda start thread id =" << this_thread::get_id() << endl;
+		this_thread::sleep_for(chrono::milliseconds(3000));
+		cout << "lamda end thread id =" << this_thread::get_id() << endl;
+		return 200; });
+	auto retLamdaFeture = lamdaFeture.get();
+	cout << "retLamdaFeture = " << retLamdaFeture << endl;*/
+	//4.在一个函数中创建异步线程
+	//CreateAsyncThread();
+
+
+	//5.async额外参数 deferred的用法
+
+	auto fetureDeferred = std::async(std::launch::deferred, AsyncPrint);
+	//当额外参数为deferred，如果不调用future.get/future.wait，函数AsyncPrint
+	//将永远不被执行。
+	//deferred 不会创建子线程，函数AsyncPrint还是在调用线程中执行。
+	fetureDeferred.get();
+}
+//测试 packaged_task的示例
+void testPackagedTask()
+{
+	//1.用线程的方式启动packaged_task
+	//packaged_task<int(int)> task1([](int a) {
+	//	cout << "lamda start thread id =" << this_thread::get_id() << endl;
+	//	this_thread::sleep_for(chrono::milliseconds(3000));
+	//	cout << "lamda end thread id =" << this_thread::get_id() << endl;
+	//	return 100;
+	//	});
+	//thread t(ref(task1),52);
+	//
+	//t.join(); // 如果不调用join的话，程序会崩溃。
+	//auto result = task1.get_future();
+	//auto ret = result.get();
+	//cout << "testPackagedTask 's result = " << ret << endl;
+	
+	//2.packaged_task用做调用对象
+
+	packaged_task<int(int)> ptObject(PrintPackageTask);
+	int a = 10;
+	thread t2(ref(ptObject), a);
+	t2.join();
+	auto res2 = ptObject.get_future();
+	auto ret2 = res2.get();
+
+}
+
 int main()
 {
     
@@ -20,22 +87,13 @@ int main()
 	t1.join();
 	t2.join();*/
 
-	//async  feture demo
-	cout << "main() start thread id =" << this_thread::get_id() << endl;
-	//auto fetureResult = async(AsyncPrint); //AsynPrint有返回值
-	//
-	//auto res = fetureResult.get();
-	//cout << "res = " << res << endl;
-
-	//auto fetureResultWithoutRetVal = async(AsyncPrintWithoutRetValue);
-	//AsyncPrintWithoutRetValue 函数没有返回值，不能调用wait / get 方法
-	//fetureResultWithoutRetVal.wait(); 
-
-	AsyncFuture af;
-	auto fetureObject = std::async(&AsyncFuture::ThreadFunc, ref(af), 5);
-	auto fres = fetureObject.get();
-	cout << "af.m_val = " << af.GetVal() << endl;
 	
+	cout << "main() start thread id =" << this_thread::get_id() << endl;
+	//async  future demo
+	//testAsynFuture();
+
+	//packaged_task   demo
+	testPackagedTask();
 	std::cout << "Hello World!\n";
 	cout << "main() end thread id =" << this_thread::get_id() << endl;
 }

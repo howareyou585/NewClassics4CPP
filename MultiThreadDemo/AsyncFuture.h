@@ -12,3 +12,5 @@ public :
 private :
 	int m_value{};
 };
+
+void CreateAsyncThread();
