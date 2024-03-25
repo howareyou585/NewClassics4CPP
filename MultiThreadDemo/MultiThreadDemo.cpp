@@ -6,6 +6,7 @@
 #include "MessageQueueConditionVariable.h"
 #include "AsyncFuture.h"
 #include "PackageTask.h"
+#include "PromiseUsage.h"
 #include <thread>
 #include <future>
 using namespace std;
@@ -73,17 +74,20 @@ void testPackagedTask()
 	auto res2 = ptObject.get_future();
 	auto ret2 = res2.get();*/
 
-	vector<packaged_task<int(int)>> vecTask;
-	packaged_task<int(int)> task2(PrintPackageTask);
-	vecTask.push_back(std::move(task2));
-	for (auto it = vecTask.begin(); it != vecTask.end(); it++)
-	{
-		auto tempTask = std::move(*it);
-		tempTask(5);
-		//要获取结果，则还是要借助get_future()
-		auto r = tempTask.get_future().get();
-		cout <<  r << endl;
-	}
+	//vector<packaged_task<int(int)>> vecTask;
+	//packaged_task<int(int)> task2(PrintPackageTask);
+	//vecTask.push_back(std::move(task2));
+	//for (auto it = vecTask.begin(); it != vecTask.end(); it++)
+	//{
+	//	auto tempTask = std::move(*it);
+	//	tempTask(5);
+	//	//要获取结果，则还是要借助get_future()
+	//	auto r = tempTask.get_future().get();
+	//	cout <<  r << endl;
+	//}
+
+	//promise的用法
+
 }
 
 int main()
@@ -104,7 +108,13 @@ int main()
 	//testAsynFuture();
 
 	//packaged_task   demo
-	testPackagedTask();
+	//testPackagedTask();
+
+	//promise的用法
+	promise<int>ps;
+	PromiseFunc(ps);
+	int ps_ret = ps.get_future().get();
+	cout << "promise ret = " << ps_ret << endl;
 	std::cout << "Hello World!\n";
 	cout << "main() end thread id =" << this_thread::get_id() << endl;
 }

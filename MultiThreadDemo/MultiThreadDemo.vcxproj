@@ -144,6 +144,7 @@
     <ClCompile Include="MessageQueueConditionVariable.cpp" />
     <ClCompile Include="MultiThreadDemo.cpp" />
     <ClCompile Include="PackageTask.cpp" />
+    <ClCompile Include="PromiseUsage.cpp" />
     <ClCompile Include="Singleton.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -151,6 +152,7 @@
     <ClInclude Include="CallOnce.h" />
     <ClInclude Include="MessageQueueConditionVariable.h" />
     <ClInclude Include="PackageTask.h" />
+    <ClInclude Include="PromiseUsage.h" />
     <ClInclude Include="Singleton.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
