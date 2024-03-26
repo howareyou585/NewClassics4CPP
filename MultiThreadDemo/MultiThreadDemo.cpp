@@ -96,7 +96,6 @@ void testPromiseFuture()
 	future<int>fe = ps.get_future();
 	//线程1中准备返回数据
 	thread t1(PromisePrepareDataThreadFunc, ref(ps));
-	//线程2中获取返回数据
 	thread t2(FutureGetDataThreadFunc, ref(fe));
 	t1.join();
 	t2.join();
