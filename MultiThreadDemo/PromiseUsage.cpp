@@ -35,3 +35,22 @@ int PrintOfPromise(promise<int>&ps, int& a)
 	
 	return a;
 }
+
+void FutureGetDataThreadFunc(future<int>& fe)
+{
+	cout << "FutureGetDataThreadFunc start thread id =" << this_thread::get_id() << endl;
+	this_thread::sleep_for(chrono::milliseconds(3000));
+	
+	auto ret = fe.get();
+	cout << "result of FutureGetDataThreadFunc:" << ret << endl;
+	cout << "FutureGetDataThreadFunc end thread id =" << this_thread::get_id() << endl;
+}
+
+void PromisePrepareDataThreadFunc(promise<int>& ps)
+{
+	cout << "PromisePrepareDataThreadFunc start thread id =" << this_thread::get_id() << endl;
+	this_thread::sleep_for(chrono::milliseconds(3000));
+
+	ps.set_value(1000); //如果忘记该语句，PrintOfPromise就无法退出。
+	cout << "PromisePrepareDataThreadFunc end thread id =" << this_thread::get_id() << endl;
+}

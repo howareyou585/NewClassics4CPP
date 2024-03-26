@@ -89,7 +89,18 @@ void testPackagedTask()
 	//promise的用法
 
 }
-
+//测试 promise/future的示例
+void testPromiseFuture()
+{
+	promise<int> ps;
+	future<int>fe = ps.get_future();
+	//线程1中准备返回数据
+	thread t1(PromisePrepareDataThreadFunc, ref(ps));
+	//线程2中获取返回数据
+	thread t2(FutureGetDataThreadFunc, ref(fe));
+	t1.join();
+	t2.join();
+}
 int main()
 {
     
@@ -111,10 +122,13 @@ int main()
 	//testPackagedTask();
 
 	//promise的用法
-	promise<int>ps;
+	/*promise<int>ps;
 	PromiseFunc(ps);
 	int ps_ret = ps.get_future().get();
-	cout << "promise ret = " << ps_ret << endl;
+	cout << "promise ret = " << ps_ret << endl;*/
+
+	//测试promise的示例
+	testPromiseFuture();
 	std::cout << "Hello World!\n";
 	cout << "main() end thread id =" << this_thread::get_id() << endl;
 }
