@@ -136,7 +136,17 @@ void testPackagedTask()
 	
 
 }
-
+//测试 promise/future的示例
+void testPromiseFuture()
+{
+	promise<int> ps;
+	future<int>fe = ps.get_future();
+	//线程1中准备返回数据
+	thread t1(PromisePrepareDataThreadFunc, ref(ps));
+	thread t2(FutureGetDataThreadFunc, ref(fe));
+	t1.join();
+	t2.join();
+}
 void testAtom()
 {
 	ReaderAndWriterGV();
