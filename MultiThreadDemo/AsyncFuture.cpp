@@ -8,6 +8,7 @@ int AsyncPrint()
 	
 	cout << "AsyncPrint() start thread id =" << this_thread::get_id() << endl;
 	this_thread::sleep_for(chrono::milliseconds(3000));
+	cout << "execute AsyncPrint function" << endl;
 	cout << "AsyncPrint() end thread id =" << this_thread::get_id() << endl;
 	return 100;
 }

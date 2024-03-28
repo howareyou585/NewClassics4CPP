@@ -7,6 +7,7 @@
 #include "AsyncFuture.h"
 #include "PackageTask.h"
 #include "PromiseUsage.h"
+#include "AtomUsage.h"
 #include <thread>
 #include <future>
 using namespace std;
@@ -42,11 +43,35 @@ void testAsynFuture()
 
 	//5.async额外参数 deferred的用法
 
-	auto fetureDeferred = std::async(std::launch::deferred, AsyncPrint);
+	//auto fetureDeferred = std::async(std::launch::deferred, AsyncPrint);
 	//当额外参数为deferred，如果不调用future.get/future.wait，函数AsyncPrint
 	//将永远不被执行。
 	//deferred 不会创建子线程，函数AsyncPrint还是在调用线程中执行。
-	fetureDeferred.get();
+	//fetureDeferred.get();
+	
+	// future的其他用法
+	//auto myFuture = std::async(launch::deferred, AsyncPrint);
+	AsyncFuture a;
+	auto myFuture = std::async(&AsyncFuture::ThreadFunc,ref(a),101);
+	cout << "continue..." << endl;
+	auto state = myFuture.wait_for(std::chrono::milliseconds(0));
+	if (state == std::future_status::timeout)
+	{
+		cout << "超时，线程没有执行完毕" << endl;
+		
+	}
+	else if (state == std::future_status::ready)
+	{
+		auto myret = myFuture.get();
+		cout << "线程已经执行完毕，并成功返回, 返回值：" <<myret << endl;
+		
+	}
+	else if (state == std::future_status::deferred)
+	{
+		//当为deferred时，如果不调用future.get，线程函数不会被执行。
+		cout << "线程没有被执行" << endl;
+		myFuture.get(); //调用get后在主线程中执行线程函数
+	}
 }
 //测试 packaged_task的示例
 void testPackagedTask()
@@ -86,10 +111,36 @@ void testPackagedTask()
 	//	cout <<  r << endl;
 	//}
 
-	//promise的用法
+	//shared_future的用法
+	packaged_task<int(int)> pt([](int par1) {
+		cout << "thread1 start id = " << this_thread::get_id() << endl;
+		this_thread::sleep_for(chrono::milliseconds(3000));
+		cout << "thread1 end id = " << this_thread::get_id() << endl;
+		return 5;
+		});
+	thread t1(ref(pt), 100);
+	t1.join();
+	//auto myfuture = pt.get_future();
+	shared_future<int> future_s(pt.get_future());
+	thread t2([&]() {
+		cout << "thread2 start id = " << this_thread::get_id() << endl;
+		this_thread::sleep_for(chrono::milliseconds(2000));
+		//shared_future<int> future_s(std::move(myfuture));
+		
+		auto myret = future_s.get();
+		future_s.get();
+		cout << "myret = " << myret << endl;
+		cout << "thread2 end id = " << this_thread::get_id() << endl;
+		});
+	t2.join();
+	
 
 }
 
+void testAtom()
+{
+	ReaderAndWriterGV();
+}
 int main()
 {
     
@@ -109,12 +160,7 @@ int main()
 
 	//packaged_task   demo
 	//testPackagedTask();
-
-	//promise的用法
-	promise<int>ps;
-	PromiseFunc(ps);
-	int ps_ret = ps.get_future().get();
-	cout << "promise ret = " << ps_ret << endl;
+	testAtom();
 	std::cout << "Hello World!\n";
 	cout << "main() end thread id =" << this_thread::get_id() << endl;
 }

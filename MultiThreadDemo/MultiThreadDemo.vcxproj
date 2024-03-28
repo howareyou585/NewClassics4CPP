@@ -140,6 +140,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AsyncFuture.cpp" />
+    <ClCompile Include="AtomUsage.cpp" />
     <ClCompile Include="CallOnce.cpp" />
     <ClCompile Include="MessageQueueConditionVariable.cpp" />
     <ClCompile Include="MultiThreadDemo.cpp" />
@@ -149,6 +150,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AsyncFuture.h" />
+    <ClInclude Include="AtomUsage.h" />
     <ClInclude Include="CallOnce.h" />
     <ClInclude Include="MessageQueueConditionVariable.h" />
     <ClInclude Include="PackageTask.h" />
